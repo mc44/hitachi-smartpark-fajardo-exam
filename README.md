@@ -7,6 +7,12 @@ REST API for registering parking lots and vehicles, checking vehicles in and out
 1. AI was used to generate the validation regex for license plates (`^[A-Za-z0-9-]+$`) and owner names (`^[A-Za-z]+(?: [A-Za-z]+)*$`).
 2. AI assisted in making this README.
 
+## Update
+
+9 October 2026, 10:00 pm
+
+After the deadline I looked at two cars checking into a one-space lot at the same time. That work is on [feature/covering-concurrency-requests](https://github.com/mc44/hitachi-smartpark-fajardo-exam/tree/feature/covering-concurrency-requests). It is separate from this submission. Check-in on that branch locks the lot row, so the second request waits and then receives the full-lot error.
+
 ## Setup
 
 - Java 17
