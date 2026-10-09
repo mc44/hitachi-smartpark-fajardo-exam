@@ -100,6 +100,36 @@ Status is 404.
 
 Status is 404.
 
+## Concurrent check-in
+
+Check-in loads the lot with `findByLotIdForUpdate`. That query uses `@Lock(LockModeType.PESSIMISTIC_WRITE)`, so the database locks that lot row until the transaction commits. A second check-in for the same lot waits, then reads the updated `occupiedSpaces`. A check-in for a different lot locks a different row and does not wait.
+
+GETs use `findByLotId` and do not take this lock. A GET during a check-in still returns the last committed lot.
+
+Check-out also changes `occupiedSpaces`, and it still uses `findByLotId`. Two check-outs of the same lot at the same time can lose an update. Check-out should use `findByLotIdForUpdate` as well.
+
+To see the lock, register two vehicles and one lot with `capacity` 1, then send both check-ins together:
+
+```bash
+curl -X POST http://localhost:8080/parking-lot/LOT_1A/check-in \
+  -H "Content-Type: application/json" \
+  -d '{"licensePlate":"ABC-123"}' &
+
+curl -X POST http://localhost:8080/parking-lot/LOT_1A/check-in \
+  -H "Content-Type: application/json" \
+  -d '{"licensePlate":"DEF-456"}' &
+
+wait
+```
+
+One request returns 200. The other returns 404:
+
+```json
+{ "lotId": "Parking lot is full: LOT_1A" }
+```
+
+`GET /parking-lot/LOT_1A` then shows `occupiedSpaces` 1, and `GET /parking-lot/LOT_1A/vehicles` lists one car.
+
 ## Input validation
 
 `@Valid` on the controller checks the request body before the service runs. A failed check throws `MethodArgumentNotValidException`. `GlobalExceptionHandler` returns 400 and a map of field name to message.

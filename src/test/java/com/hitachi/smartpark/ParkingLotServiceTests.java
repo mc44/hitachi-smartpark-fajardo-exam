@@ -44,6 +44,9 @@ class ParkingLotServiceTests {
 
         lenient().when(parkingLotRepository.findByLotId("LOT_1A")).thenReturn(lot1);
         lenient().when(parkingLotRepository.findByLotId("LOT_2B")).thenReturn(lot2);
+        lenient().when(parkingLotRepository.findByLotIdForUpdate("LOT_1A")).thenReturn(lot1);
+        lenient().when(parkingLotRepository.findByLotIdForUpdate("LOT_2B")).thenReturn(lot2);
+
         lenient().when(vehicleService.getVehicle("ABC-123")).thenReturn(vehicle1);
         lenient().when(vehicleService.getVehicle("DEF-456")).thenReturn(vehicle2);
     }
@@ -51,7 +54,7 @@ class ParkingLotServiceTests {
     @Test
     void throwWhenParkigLotNotFound(){
         assertThrows(ParkingLotNotFoundException.class,
-                () -> parkingLotService.getParkingLot("DOESNT-EXIST"));
+                () -> parkingLotService.getParkingLotById("DOESNT-EXIST"));
     }
 
     @Test

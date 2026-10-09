@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +30,9 @@ public class ParkingLotService {
         return parkingLot;
     }
 
-    public ParkingLot getParkingLotById(String lotId){
-        return getParkingLot(lotId);
-    }
-
     @Transactional
     public ParkingLot checkInParking(ParkingRequest parkingRequest, String lotId){
-        ParkingLot parkingLot = getParkingLotById(lotId);
+        ParkingLot parkingLot = fetchParkingLot(lotId, parkingLotRepository::findByLotIdForUpdate);
         if(parkingLot.getCapacity() - parkingLot.getOccupiedSpaces() <=0 ){
             throw new ParkingLotFullException(lotId);
         }
@@ -51,7 +48,7 @@ public class ParkingLotService {
 
     @Transactional
     public ParkingLot checkOutParking(ParkingRequest parkingRequest, String lotId){
-        ParkingLot parkingLot = getParkingLotById(lotId);
+        ParkingLot parkingLot = fetchParkingLot(lotId, parkingLotRepository::findByLotId);
         Vehicle vehicle = vehicleService.getVehicle(parkingRequest.licensePlate());
         if(vehicle.getParkingLot() == null){
             throw new VehicleNotParkedException(vehicle.getLicensePlate());
@@ -65,9 +62,13 @@ public class ParkingLotService {
         return parkingLot;
     }
 
-    public ParkingLot getParkingLot(String lotId){
-        ParkingLot parkingLot = parkingLotRepository.findByLotId(lotId);
-        if(parkingLot == null){
+    public ParkingLot getParkingLotById(String lotId) {
+        return fetchParkingLot(lotId, parkingLotRepository::findByLotId);
+    }
+
+    private ParkingLot fetchParkingLot(String lotId, Function<String, ParkingLot> finder) {
+        ParkingLot parkingLot = finder.apply(lotId);
+        if (parkingLot == null) {
             throw new ParkingLotNotFoundException(lotId);
         }
         return parkingLot;
