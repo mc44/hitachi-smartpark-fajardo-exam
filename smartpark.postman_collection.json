@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "0754ca63-1f1b-4ed1-87ae-cfbc05c4628d",
+		"name": "smartpark",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19111834"
+	},
+	"item": [
+		{
+			"name": "vehicle apis",
+			"item": [
+				{
+					"name": "registerVehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\" : \"KAG-12345\",\n    \"vehicleType\" : \"TRUCK\",\n    \"ownerName\" : \"John Trucker\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/vehicle",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehicle/KAG-1234",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehicle",
+								"KAG-1234"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "parking-lot apis",
+			"item": [
+				{
+					"name": "registerParkingLot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lotId\" : \"LOT_1B\",\n    \"location\": \"Makati\",\n    \"capacity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parking-lot/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParkingLotByLotId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parking-lot/LOT_1A",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"LOT_1A"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParkingLotAvailability",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parking-lot/LOT_1A/availability",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"LOT_1A",
+								"availability"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParkingLotVehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parking-lot/LOT_1A/vehicles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"LOT_1A",
+								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\" : \"KAG-1235\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parking-lot/LOT_1A/check-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"LOT_1A",
+								"check-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkOut",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\" : \"KAG-1235\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parking-lot/LOT_1A/check-out",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parking-lot",
+								"LOT_1A",
+								"check-out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
